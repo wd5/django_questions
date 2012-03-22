@@ -6,4 +6,7 @@ setup(
     packages=[
         'django_questions',
     ],
+    requires=[
+        'BeautifulSoup'
+    ],
 )
