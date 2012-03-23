@@ -19,16 +19,16 @@ def render_to_response(request, template_name, context_dict={}, cookies={}):
 
 
 def questions(request, form_class=QuestionForm, template='templates/questions.html'):
-    if request.POST.get('action') and request.user.is_authenticated():
+    if request.POST.get('action'):
         form = form_class(request.POST)
         if form.is_valid():
-            question = form.save(request.user)
+            question = form.save()
             question.notify_master()
             return HttpResponseRedirect(reverse('questions')+"?save=ok")
     else:
         form = form_class()
-        
-    context = {'questions': Question.with_answer.all(), 
+
+    context = {'questions': Question.with_answer.all(),
                'save': request.GET.get('save'),
                'form': form
                }
@@ -54,9 +54,9 @@ def answers(request, form_class=AnswerForm, template='templates/answers.html'):
             return HttpResponseRedirect(reverse('answers')+"?save=ok")
 
     else:
-        form = form_class()        
-            
-    context = {'questions': Question.without_answers.all(), 
+        form = form_class()
+
+    context = {'questions': Question.without_answers.all(),
                'save': request.GET.get('save'),
                'form': form
                }
